@@ -16,8 +16,8 @@
         <h1 class="brand">VerifyCert</h1>
     </nav>
 
-    
-
+    <!-- every certificate is stored in an array. here we are retrieving certificate's 
+         unique hash using its index as input -->
     <!-- take input -->
     <div class="d-input">
         <label for="index"></label>
@@ -25,14 +25,13 @@
         <!--id is used to getElementById in js code-->
         <!--min is not working right now, to be fixed-->
     </div>
-    <!--button to call retrieve details function-->
+    
+    <!--button to call getHash function-->
     <div class="btn-div">
       <button onclick="getHash();" class="get-details">Get Hash</button>
     </div>
-    <!--copied from github https://gist.github.com/bajcmartinez/45bb7bb39fea940cd45a5e88759f58a5-->
-    <!--tells us when web3 is loaded-->
-    <!--Status: <span id="status">Loading...</span> -->
-
+   
+    <!-- form to take inputs from user to pass as arguments in createNewCertificate js function -->
     <form>
       Student Name: <input type="text" name="studentName" id="stdnm"><br>
       Institute Name: <input type="text" name="instituteName" id="instnm"><br>
@@ -40,209 +39,217 @@
       Passing Year: <input type="number" name="passingYear" id= "psgyr"><br>
       <button onclick="createNewCertificate();" class="get-details">Create New Certificate</button>
     </form>
-     
+    
+    
+    <!-- JAVASCRIPT -->
     <script type="text/javascript">
-
+    
+      /*Initializing web3*/  
       async function loadWeb3() {
           if (window.ethereum) {
               window.web3 = new Web3(window.ethereum);
               window.ethereum.enable();
           }
       }
-        
+       
+      /*Initialize our loadContract function, includes the ABI and contract address*/  
       async function loadContract() {
         return await new window.web3.eth.Contract([
-    {
-      "inputs": [],
-      "stateMutability": "nonpayable",
-      "type": "constructor"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "AllCertificates",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "nameStudent",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "instituteName",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "gradePoint",
-          "type": "string"
-        },
-        {
-          "internalType": "address",
-          "name": "signedBy",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "yearOfPassing",
-          "type": "uint256"
-        },
-        {
-          "internalType": "bytes32",
-          "name": "uniqueId",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "uint256",
-          "name": "index",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function",
-      "constant": true
-    },
-    {
-      "inputs": [],
-      "name": "admin",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function",
-      "constant": true
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "_studentName",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "_instituteName",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "_gradePoint",
-          "type": "string"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_passingYear",
-          "type": "uint256"
-        }
-      ],
-      "name": "createCert",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_index",
-          "type": "uint256"
-        }
-      ],
-      "name": "getHashByIndex",
-      "outputs": [
-        {
-          "internalType": "bytes32",
-          "name": "",
-          "type": "bytes32"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function",
-      "constant": true
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "_hash",
-          "type": "bytes32"
-        }
-      ],
-      "name": "getCertDetailsByHash",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "_studentName",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "_instituteName",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "_gradePoint",
-          "type": "string"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_passingYear",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_index",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_signedBy",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function",
-      "constant": true
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_index",
-          "type": "uint256"
-        },
-        {
-          "internalType": "string",
-          "name": "_studentName",
-          "type": "string"
-        }
-      ],
-      "name": "editNameStudent",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    }
-  ], '0xC87f5A12672b24a6c349C8924d495208892b82cB');
-      }
+            {
+              "inputs": [],
+              "stateMutability": "nonpayable",
+              "type": "constructor"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "name": "AllCertificates",
+              "outputs": [
+                {
+                  "internalType": "string",
+                  "name": "nameStudent",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "instituteName",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "gradePoint",
+                  "type": "string"
+                },
+                {
+                  "internalType": "address",
+                  "name": "signedBy",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "yearOfPassing",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "uniqueId",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "index",
+                  "type": "uint256"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function",
+              "constant": true
+            },
+            {
+              "inputs": [],
+              "name": "admin",
+              "outputs": [
+                {
+                  "internalType": "address",
+                  "name": "",
+                  "type": "address"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function",
+              "constant": true
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "string",
+                  "name": "_studentName",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "_instituteName",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "_gradePoint",
+                  "type": "string"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "_passingYear",
+                  "type": "uint256"
+                }
+              ],
+              "name": "createCert",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "_index",
+                  "type": "uint256"
+                }
+              ],
+              "name": "getHashByIndex",
+              "outputs": [
+                {
+                  "internalType": "bytes32",
+                  "name": "",
+                  "type": "bytes32"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function",
+              "constant": true
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "bytes32",
+                  "name": "_hash",
+                  "type": "bytes32"
+                }
+              ],
+              "name": "getCertDetailsByHash",
+              "outputs": [
+                {
+                  "internalType": "string",
+                  "name": "_studentName",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "_instituteName",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "_gradePoint",
+                  "type": "string"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "_passingYear",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "_index",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "_signedBy",
+                  "type": "address"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function",
+              "constant": true
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "_index",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "string",
+                  "name": "_studentName",
+                  "type": "string"
+                }
+              ],
+              "name": "editNameStudent",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            }
+          ], '0xC87f5A12672b24a6c349C8924d495208892b82cB');
+              }
+      /* 0xC87f5A12672b24a6c349C8924d495208892b82cB is the contract address on chain when we run the local chain. This will change
+         everytime we restart our local blockchain.
+         Everything before the address is the ABI */  
 
+      /*Function to load our instance of contract in our window*/  
       async function load() {
                 await loadWeb3();
-                window.contract = await loadContract();
-                //updateStatus('Ready!');
+                window.contract = await loadContract();      
             }
-
+      /*calling the load function*/
       load();
 
+      /*js function to call createCert method/function in our smart contract */  
       async function createNewCertificate() {
               let studentName = document.getElementById('stdnm').value;
               let instituteName = document.getElementById('instnm').value;
@@ -253,7 +260,8 @@
               let newCertificate = await window.contract.methods.createCert(studentName,instituteName,gradePoint,passingYear).send({from: account});
               alert(newCertificate);
             }
-
+        
+      /*js function to call getHashByIndex method/function in our smart contract */
       async function getHash() {          
         let indexValue = document.getElementById('index').value;
         let hash = await window.contract.methods.getHashByIndex(indexValue).call();
@@ -261,21 +269,7 @@
             alert("hash is" + hash);
       }
 
-      /*
-      function updateStatus(status) {
-          const statusEl = document.getElementById('status');
-          statusEl.innerHTML = status;
-          console.log(status);
-      }*/
-
     </script>
-    <!--to display the certificate details retrieved from the BC-->
-    <div class="cert-details">
-
-    </div>
-    
-    
-
-   
+     
 </body>
 </html>

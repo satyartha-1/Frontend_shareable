@@ -1,0 +1,29 @@
+error in certificate 2
+
+web3.min.js:8 Uncaught (in promise) Error: invalid BigNumber string (argument="value", value="", code=INVALID_ARGUMENT, version=bignumber/5.1.1)
+    at t.value (web3.min.js:8)
+    at t.value (web3.min.js:8)
+    at t.value (web3.min.js:8)
+    at Function.value (web3.min.js:21)
+    at r.value (web3.min.js:46)
+    at web3.min.js:21
+    at Array.forEach (<anonymous>)
+    at b (web3.min.js:21)
+    at r.value (web3.min.js:46)
+    at t.value (web3.min.js:21)
+value @ web3.min.js:8
+value @ web3.min.js:8
+value @ web3.min.js:8
+value @ web3.min.js:21
+value @ web3.min.js:46
+(anonymous) @ web3.min.js:21
+b @ web3.min.js:21
+value @ web3.min.js:46
+value @ web3.min.js:21
+c.encodeParameters @ web3.min.js:21
+(anonymous) @ web3.min.js:21
+b._encodeMethodABI @ web3.min.js:21
+b._processExecuteArguments @ web3.min.js:21
+b._executeMethod @ web3.min.js:21
+getHash @ certificate2.html?studentName=&instituteName=&gradePoint=&passingYear=:259
+onclick @ certificate2.html?studentName=&instituteName=&gradePoint=&passingYear=:30
